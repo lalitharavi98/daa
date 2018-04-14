@@ -2,14 +2,9 @@
 #include<stdlib.h>
 #include<string.h>
 int min(int a,int b,int c);
-struct solution
-	{
-		char change;
-		int left;
-		int right;
-	}soln[50];
 int main()
 {
+	
 	char str1[100];
 	char str2[100];
 	printf("Enter the first string:");
@@ -51,17 +46,16 @@ int main()
 			}
 		}
 	}
-	printf("%d",E[len1][len2]);
+	printf("EDIT DISTANCE=%d\n",E[len1][len2]);
 	i=len1;j=len2;
 	int k=0;
+	char change[50];
 	while(i>0 || j>0)
 	{
 		
 		if(edge[i][j]==0)
 		{
-			soln[k].change='n';
-			soln[k].left=i-1;
-			soln[k].right=j-1;
+			change[k]='n';
 			i=i-1;
 			j=j-1;
 		}
@@ -70,25 +64,22 @@ int main()
 			int x=min(E[i-1][j],E[i][j-1],E[i-1][j-1]);
 			if(x==E[i-1][j])
 			{
-				soln[k].change='d';
-				soln[k].left=i-1;
-				soln[k].right=j;
+				change[k]='d';
+				
 				i=i-1;
 				
 			}
 			else if(x==E[i-1][j-1])
 			{
-				soln[k].change='s';
-				soln[k].left=i-1;
-				soln[k].right=j-1;
+				change[k]='s';
+				
 				i=i-1;
 				j=j-1;
 			}
 			else
 			{
-				soln[k].change='i';
-				soln[k].left=i;
-				soln[k].right=j-1;
+				change[k]='i';
+				
 				j=j-1;
 			
 			}
@@ -96,14 +87,68 @@ int main()
 		}
 		k++;
 	}
+
 	int len=k;
-	printf("\nlength=%d\n",len);
-	for(i=len;i>=0;i--)
+
+	int m;
+	i=0;
+	for(i=len-1;i>=0;i--)
 	{
-		printf("%c ",soln[i].change);
+		printf("%c  ",change[i]);
+	}
+	printf("\n");
+	i=0;
+	for(m=len-1;m>=0;m--)
+	{	
+		if(change[m]=='n')
+		{
+			printf("%c  ",str1[i]);
+			i++;	
+		}
+		else if(change[m]=='s')
+		{
+			printf("%c  ",str1[i]);
+			i++;
+		}
+		else if(change[m]=='i')
+		{
+			printf("_  ");
+		}
+		else
+		{
+			printf("%c  ",str1[i]);
+			i++;
+		}
+		
+	}
+	printf("\n\n");
+	i=0;
+	for(m=len-1;m>=0;m--)
+	{	
+		if(change[m]=='n')
+		{
+			printf("%c  ",str2[i]);
+			i++;	
+		}
+		else if(change[m]=='s')
+		{
+			printf("%c  ",str2[i]);
+			i++;
+		}
+		else if(change[m]=='i')
+		{
+			printf("%c  ",str1[i]);
+			i++;
+		}
+		else
+		{
+			printf("_  ");
+			
+		}
+		
 	}
 
-
+	
 	return 0;
 }
 int min(int a,int b,int c)
